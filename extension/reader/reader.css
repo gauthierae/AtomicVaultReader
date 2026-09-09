@@ -1,0 +1,1125 @@
+/* Two-tier tokens — Sprint 4, increment 1 (design contract, sprint-4.md).
+   Primitives hold raw values and live here alone.
+   Semantic aliases hold meaning. Every rule below this block uses an alias.
+
+   Light is the base. Dark redefines the ALIASES only, at the foot of this file.
+   No rule below :root knows which theme is on.
+
+   The theme is carried by data-theme on <html>, stamped by reader/theme.js
+   before the first paint and re-stamped by reader.js when an override is
+   stored (D-CR-014). A media query alone left the page light on a dark
+   system, and gave the reader no way to override it. */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  /* --- primitives --- */
+  --gray-0:    #ffffff;
+  --gray-50:   #f7f7f7;
+  --gray-100:  #f2f2f2;
+  --gray-200:  #e6e6e9;
+  --gray-300:  #d8d8d8;
+  --gray-400:  #a0a0a8;
+  --gray-600:  #6b6b6b;
+  --gray-700:  #3a3a41;
+  --gray-800:  #26262b;
+  --gray-850:  #1c1c20;
+  --gray-880:  #18181b;
+  --gray-900:  #1a1a1a;
+  --gray-950:  #0a0a0a;
+  --gray-1000: #121214;
+
+  /* #cc5500 is the suite accent (kernel-aesthetic-tokens.md). It reads 4.31:1
+     on white: enough for fills, borders and focus rings, short of AA for body
+     text. --copper-700 carries the text half at 6.21:1. */
+  --copper-300: #e87c33;
+  --copper-400: #e0691a;
+  --copper-500: #cc5500;
+  --copper-700: #a34400;
+
+  --red-300:       #ff8a80;
+  --red-300-wash:  rgba(255, 138, 128, 0.12);
+  --red-600:       #b3261e;
+  --red-wash:      rgba(179, 38, 30, 0.06);
+
+  --amber-200: #ffe9a8;
+
+  --corner-0: 2px;
+  --corner-1: 6px;
+  --corner-2: 8px;
+  --corner-3: 10px;
+
+  /* Type scale, ratio 1.2 from a 1rem base. The base is 14px (html font). */
+  --text-1: 0.8125rem;
+  --text-2: 0.875rem;
+  --text-3: 1rem;
+  --text-4: 1.125rem;
+  --text-5: 1.3125rem;
+  --text-6: 1.625rem;
+
+  --track-1: 0.04em;
+
+  /* Motion. --dur-0 is the reduce sentinel: near zero, but not zero, so a
+     transitionend listener still fires. */
+  --dur-0: 0.01ms;
+  --dur-1: 120ms;
+  --delay-0: 0s;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --lh-tight: 1.25;
+  --lh-body:  1.65;
+
+  /* Spacing scale. The reading column resolves to these; the sidebar and the
+     bar do not yet — that sweep is a later increment. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  --ch-measure: 68ch;
+
+  /* Line weights. */
+  --stroke-1: 1px;
+  --stroke-2: 1.5px;
+  --stroke-3: 2px;
+  --stroke-4: 3px;
+  --stroke-5: 4px;
+  --stroke-6: 5px;
+
+  /* Hit targets are specified in CSS px, because the 24x24 floor is. A rem
+     here would drift: the root font is 14px, so 1.5rem is 21px, not 24. */
+  --target-min:   24px;
+  --target-comfy: 28px;
+
+  /* One-off product dimensions. */
+  --dim-glyph-w: 14px;
+  --dim-glyph-short: 10px;
+  --dim-glyph-h: 12px;
+  --dim-sidebar: 280px;
+  --text-root:    14px;
+  --lh-ui:        1.5;
+
+  /* --- semantic aliases: surfaces --- */
+  --color-surface:        var(--gray-0);
+  --color-surface-sunken: var(--gray-50);
+  --color-surface-chrome: var(--gray-100);
+  --color-surface-hover:  var(--gray-100);
+  --color-control:        var(--gray-0);
+
+  /* --- semantic aliases: text --- */
+  --color-text:        var(--gray-900);
+  --color-text-muted:  var(--gray-600);
+  --color-accent-text: var(--copper-700);
+  --color-accent-on:   var(--gray-0);
+  --color-danger:      var(--red-600);
+  --color-mark-text:   var(--gray-900);
+
+  /* --- semantic aliases: lines and fills --- */
+  --color-border:        var(--gray-300);
+  --color-accent:        var(--copper-500);
+  --color-accent-strong: var(--copper-700);
+  --color-danger-wash: var(--red-wash);
+  --color-mark:        var(--amber-200);
+
+  /* --- semantic aliases: radii --- */
+  --radius-glyph:   var(--corner-0);
+  --radius-row:     var(--corner-1);
+  --radius-control: var(--corner-2);
+  --radius-box:     var(--corner-2);
+  --radius-cta:     var(--corner-3);
+
+  /* --- semantic aliases: type --- */
+  --font-size-caption: var(--text-1);
+  --font-size-small:   var(--text-2);
+  --font-size-body:    var(--text-3);
+  --font-size-h4:      var(--text-3);
+  --font-size-h3:      var(--text-4);
+  --font-size-h2:      var(--text-5);
+  --font-size-h1:      var(--text-6);
+
+  --leading-heading: var(--lh-tight);
+  --leading-body:    var(--lh-body);
+  --leading-ui:      var(--lh-ui);
+  --tracking-label:  var(--track-1);
+
+  /* --- semantic aliases: motion --- */
+  --motion-fast:  var(--dur-1);
+  --motion-ease:  var(--ease-standard);
+  --motion-off:   var(--dur-0);
+  --motion-nodelay: var(--delay-0);
+  --font-size-root:  var(--text-root);
+
+  /* --- semantic aliases: the reading rhythm --- *
+     One direction only. Every block pushes down; a heading also pulls up. */
+  --flow-tight: var(--space-1);
+  --flow-body:  var(--space-4);
+  --flow-block: var(--space-5);
+  --flow-head:  var(--space-6);
+  --pad-column: var(--space-5);
+  --pad-box-y:  var(--space-3);
+  --pad-box-x:  var(--space-4);
+  --pad-cell-y: var(--space-1);
+  --pad-cell-x: var(--space-3);
+  --pad-inline: var(--space-1);
+  --indent-list: var(--space-5);
+  --flow-label: var(--space-2);
+
+  /* --- semantic aliases: chrome spacing --- */
+  --pad-panel-y: var(--space-8);
+  --pad-panel-x: var(--space-5);
+  --pad-chrome:  var(--space-3);
+  --pad-pane:    var(--space-2);
+  --pad-row-y:   var(--space-1);
+  --pad-row-x:   var(--space-2);
+  --pad-rule:    var(--space-3);
+  --pad-cta-y:   var(--space-2);
+  --pad-cta-x:   var(--space-4);
+  --indent-tree: var(--space-3);
+
+  --gap-inline:  var(--space-1);
+  --gap-control: var(--space-2);
+  --gap-section: var(--space-3);
+
+  /* --- semantic aliases: lines, rings and sizes --- */
+  --border-hair:  var(--stroke-1);
+  --border-rule:  var(--stroke-4);
+  --ring-width:   var(--stroke-3);
+  --ring-offset:  var(--stroke-3);
+  --glyph-stroke: var(--stroke-2);
+  --glyph-spine:  var(--stroke-6);
+  --glyph-arrow:  var(--stroke-5);
+  --glyph-bar:    var(--stroke-3);
+  --glyph-short:  var(--dim-glyph-short);
+  --glyph-width:  var(--dim-glyph-w);
+  --glyph-height: var(--dim-glyph-h);
+  --handle-width: var(--stroke-6);
+
+  --size-row:      var(--target-min);
+  --size-control:  var(--target-comfy);
+  --height-bar:    var(--space-7);
+  --width-sidebar: var(--dim-sidebar);
+
+  /* The reading measure. `ch` ties it to the rendered font, not to a guess. */
+  --measure: var(--ch-measure);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: var(--font-size-root)/var(--leading-ui) system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+main { height: 100%; }
+section { height: 100%; }
+[hidden] { display: none !important; }
+
+/* --- the three single-panel screens --- */
+
+.panel {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--pad-panel-y) var(--pad-panel-x);
+}
+
+.panel h1 { font-size: var(--font-size-h1); margin: 0 0 var(--flow-body); }
+.panel p { margin: 0 0 var(--flow-body); }
+
+.callout {
+  border-left: var(--border-rule) solid var(--color-accent);
+  padding-left: var(--pad-rule);
+}
+
+.note { color: var(--color-text-muted); font-size: var(--font-size-small); }
+
+button.primary {
+  background: var(--color-accent-strong);
+  color: var(--color-accent-on);
+  border: 0;
+  border-radius: var(--radius-cta);
+  padding: var(--pad-cta-y) var(--pad-cta-x);
+  font: inherit;
+  cursor: pointer;
+}
+
+button.link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--color-accent-text);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* --- the reading screen --- */
+
+#screen-main { display: flex; flex-direction: column; }
+
+#vault-bar {
+  display: flex;
+  flex-wrap: nowrap;   /* C10: five buttons stay on one line. The bar has a fixed
+                          height, so a wrapped button hides rather than pushing
+                          the bar taller. */
+  align-items: center;
+  gap: var(--gap-control);
+  flex: 0 0 auto;
+  height: var(--height-bar);
+  padding: 0 var(--pad-chrome);
+  background: var(--color-surface);
+  border-bottom: var(--border-hair) solid var(--color-border);
+}
+
+/* The vault name is the only fact the bar carries. It gets the weight. */
+#vault-name {
+  min-width: 0;        /* C10: a flex item refuses to shrink below its content
+                          width without this, and a long vault name would push
+                          the tool row out of the bar. The name yields, never a
+                          button. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-text);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#vault-name::before {
+  content: "/";
+  margin-right: var(--gap-inline);
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+#vault-truncated { color: var(--color-text-muted); font-size: var(--font-size-caption); }
+
+/* Secondary controls: one treatment, two places (the bar, the note header). */
+#btn-change-vault,
+#btn-view {
+  flex: 0 0 auto;
+  min-height: var(--size-control);
+  background: var(--color-control);
+  border: var(--border-hair) solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: var(--pad-row-y) var(--pad-chrome);
+  font: inherit;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+#btn-change-vault:hover,
+#btn-view:hover { background: var(--color-surface-hover); }
+
+#btn-change-vault:active,
+#btn-view:active { background: var(--color-surface-chrome); }
+
+#btn-change-vault { margin-left: auto; }
+
+/* The tool row. Every glyph is drawn from borders, so no font has to carry it
+   and no icon file ships. */
+#tools {
+  display: flex;
+  flex-wrap: nowrap;   /* C10: the row never wraps and never shrinks. */
+  flex: 0 0 auto;
+  gap: var(--gap-inline);
+  padding-left: var(--gap-control);
+  border-left: var(--border-hair) solid var(--color-border);
+}
+
+.tool {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: var(--size-control);
+  height: var(--size-control);
+  padding: 0;
+  background: none;
+  border: var(--border-hair) solid transparent;
+  border-radius: var(--radius-row);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.tool::before {
+  content: "";
+  width: var(--glyph-width);
+  height: var(--glyph-height);
+  border-radius: var(--radius-glyph);
+}
+
+/* Four states, read as link states: rest, hover, on, on-and-hovered. Colour
+   carries the state; the glyph never changes shape to say it. */
+.tool:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+  color: var(--color-accent-text);
+}
+
+/* A tool with nothing to act on is inert, never hidden. Hiding it would make
+   the row jump between notes. */
+.tool:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.tool[aria-pressed="true"],
+.tool[aria-expanded="true"] {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border);
+  color: var(--color-accent-text);
+}
+
+.tool[aria-pressed="true"]:hover,
+.tool[aria-expanded="true"]:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-accent);
+}
+
+/* Expand and collapse: a chevron, drawn from two borders. It points down to
+   open the tree and up to close it. The sidebar glyph sets the precedent — a
+   glyph may say what the control acts on. Colour still carries hover and
+   pressed, and shape never says those. */
+#btn-tree-toggle::before {
+  width: var(--glyph-short);
+  height: var(--glyph-short);
+  border: var(--glyph-stroke) solid currentColor;
+  border-top: none;
+  border-left: none;
+  border-radius: 0;
+  /* A rotated square sits off-centre in a flex box. Without the translate the
+     chevron reads as misaligned beside four glyphs that are square. */
+  transform: rotate(45deg) translate(-15%, -15%);
+}
+
+#btn-tree-toggle[aria-expanded="true"]::before {
+  transform: rotate(225deg) translate(-15%, -15%);
+}
+
+/* C4-2 is not repaired for the older tools, but a new control need not repeat
+   it. aria-disabled keeps the button in the tab order, so its explanation stays
+   reachable. onTreeToggleClick returns early. */
+#btn-tree-toggle[aria-disabled="true"] {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* M2: .tool:hover:not(:disabled) excludes the `disabled` attribute and nothing
+   else, so without this an aria-disabled button lights up on hover and promises
+   a click the handler refuses. */
+#btn-tree-toggle[aria-disabled="true"]:hover {
+  background: none;
+  color: var(--color-text-muted);
+}
+
+/* The tree: a panel with a thick left edge. */
+#btn-sidebar::before {
+  border: var(--glyph-stroke) solid currentColor;
+  border-left-width: var(--glyph-spine);
+}
+
+#btn-sidebar[aria-expanded="false"]::before { border-left-width: var(--glyph-stroke); }
+
+/* The frontmatter: the same panel, banded across the top. */
+#btn-frontmatter::before {
+  border: var(--glyph-stroke) solid currentColor;
+  border-top-width: var(--glyph-spine);
+}
+
+/* The contents: three rules, the middle one short. */
+#btn-toc::before {
+  height: auto;
+  align-self: center;
+  padding: var(--glyph-bar) 0;
+  border-top: var(--glyph-bar) solid currentColor;
+  border-bottom: var(--glyph-bar) solid currentColor;
+  border-radius: 0;
+}
+
+#btn-toc::after {
+  content: "";
+  position: absolute;
+  width: var(--glyph-short);
+  height: var(--glyph-bar);
+  background: currentColor;
+}
+
+/* The theme: a disc, half filled. The fill is the half that is not the ground. */
+#btn-theme::before {
+  width: var(--glyph-height);
+  height: var(--glyph-height);
+  border: var(--glyph-stroke) solid currentColor;
+  border-radius: 50%;
+  background-image: linear-gradient(90deg, transparent 50%, currentColor 50%);
+}
+
+/* Every control shows the same ring. The reader had none before Sprint 4. */
+:focus-visible {
+  outline: var(--ring-width) solid var(--color-accent);
+  outline-offset: var(--ring-offset);
+}
+
+#panes {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  --sidebar-width: var(--width-sidebar);
+}
+
+#sidebar {
+  flex: 0 0 var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: var(--border-hair) solid var(--color-border);
+}
+
+#search-input {
+  flex: 0 0 auto;
+  margin: var(--pad-pane);
+  padding: var(--pad-row-y) var(--pad-row-x);
+  font: inherit;
+  color: inherit;
+  background: var(--color-control);
+  border: var(--border-hair) solid var(--color-border);
+  border-radius: var(--radius-row);
+}
+
+#search-input:disabled { color: var(--color-text-muted); background: var(--color-surface-sunken); }
+
+#tree, #search-results {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: var(--pad-pane);
+}
+
+/* A guide line per nesting level. The line is the hierarchy; indentation alone
+   was not readable past the second folder. */
+#tree ul {
+  list-style: none;
+  margin: 0 0 0 var(--pad-row-x);
+  padding-left: var(--indent-tree);
+  border-left: var(--border-hair) solid var(--color-border);
+}
+
+#tree > ul {
+  margin-left: 0;
+  padding-left: 0;
+  border-left: 0;
+}
+
+#tree details { margin: 0; }
+
+#tree summary {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-inline);
+  min-height: var(--size-row);
+  padding: 0 var(--pad-row-y);
+  border-radius: var(--radius-row);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+#tree summary::-webkit-details-marker { display: none; }
+
+/* The disclosure triangle, drawn from borders. */
+#tree summary::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  border-left: var(--glyph-arrow) solid currentColor;
+  border-top: var(--glyph-arrow) solid transparent;
+  border-bottom: var(--glyph-arrow) solid transparent;
+  transition: transform var(--motion-fast) var(--motion-ease);
+}
+
+#tree details[open] > summary::before { transform: rotate(90deg); }
+
+#tree summary:hover { background: var(--color-surface-hover); }
+
+/* Depth carries weight: a top folder is text, a nested folder is muted. */
+#tree > ul > li > details > summary {
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+}
+
+/* The border is transparent on every row, so selecting one shifts no layout. */
+#tree button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--size-row);
+  text-align: left;
+  background: none;
+  border: var(--border-hair) solid transparent;
+  border-radius: var(--radius-row);
+  padding: 0 var(--pad-row-y) 0 var(--indent-tree);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+#tree button:hover:not(:disabled) { background: var(--color-surface-hover); }
+
+/* The open note is marked by weight and an outline. A filled row put white text
+   on a grey hover background and vanished (PO, 2026-09-03). */
+#tree button[aria-current="true"] {
+  background: none;
+  border-color: var(--color-accent-strong);
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+#tree button[aria-current="true"]:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-accent-text);
+}
+
+#tree button.non-md {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* The drag handle between the two panes. 5px of grab area, invisible at rest. */
+#sidebar-resizer {
+  flex: 0 0 auto;
+  width: var(--handle-width);
+  background: none;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+#sidebar-resizer:hover,
+#sidebar-resizer.dragging { background: var(--color-accent); }
+
+#panes.sidebar-hidden #sidebar,
+#panes.sidebar-hidden #sidebar-resizer { display: none; }
+
+#content { flex: 1 1 auto; display: flex; flex-direction: column; min-width: 0; }
+
+#file-title {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-section);
+  flex: 0 0 auto;
+  padding: var(--pad-pane) var(--pad-box-x);
+  border-bottom: var(--border-hair) solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+#file-path {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Vault Rot Phase 1: the reader reports decay and repairs nothing. */
+#file-status {
+  color: var(--color-danger);
+  font-size: var(--font-size-caption);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#btn-view { margin-left: auto; }
+
+/* CR5-3: file-path takes focus() after the chooser resolves. It never enters
+   the tab order, so it must not paint a ring on a mouse click. */
+#file-path:focus { outline: none; }
+#file-path:focus-visible { outline: var(--ring-width) solid var(--color-accent); }
+
+#file-body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: var(--pad-column);
+}
+
+/* The Sprint 1 view. Byte-exact, frontmatter included. */
+#file-raw {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--font-size-small);
+  line-height: var(--leading-body);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* --- frontmatter block --- */
+
+#fm-block {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--pad-cell-y) var(--pad-cell-x);
+  max-width: var(--measure);
+  margin: 0 0 var(--flow-block);
+  padding: var(--pad-box-y) var(--pad-box-x);
+  border: var(--border-hair) solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+#fm-block dt { font-weight: 600; }
+#fm-block dd { margin: 0; word-break: break-word; }
+
+/* --- table of contents --- */
+
+#toc {
+  max-width: var(--measure);
+  margin: 0 0 var(--flow-block);
+  padding: var(--pad-box-y) var(--pad-box-x);
+  border-left: var(--border-rule) solid var(--color-accent);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-box);
+}
+
+#toc h2 {
+  margin: 0 0 var(--flow-label);
+  font-size: var(--font-size-caption);
+  line-height: var(--leading-heading);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+}
+
+#toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-small);
+}
+
+#toc-list li { margin: 0; }
+
+/* Depth is indentation, one step per heading level. */
+#toc-list li[data-depth="2"] { padding-left: var(--indent-tree); }
+#toc-list li[data-depth="3"] { padding-left: calc(var(--indent-tree) * 2); }
+#toc-list li[data-depth="4"] { padding-left: calc(var(--indent-tree) * 3); }
+#toc-list li[data-depth="5"] { padding-left: calc(var(--indent-tree) * 4); }
+#toc-list li[data-depth="6"] { padding-left: calc(var(--indent-tree) * 5); }
+
+.toc-entry {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--size-row);
+  text-align: left;
+  background: none;
+  border: var(--border-hair) solid transparent;
+  border-radius: var(--radius-row);
+  padding: 0 var(--pad-row-y);
+  font: inherit;
+  color: var(--color-accent-text);
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.toc-entry:hover { background: var(--color-surface-hover); }
+
+/* --- rendered note --- */
+
+/* The measure is the product. 68ch lands near 70 characters a line, inside the
+   55-75 band that reading research keeps returning. */
+#file-rendered {
+  max-width: var(--measure);
+  font-size: var(--font-size-body);
+  line-height: var(--leading-body);
+  word-wrap: break-word;
+}
+
+/* One rhythm rule: a block pushes down, a heading also pulls up. No margin
+   collapses to reason about, and no element carries a top and a bottom. */
+#file-rendered h1,
+#file-rendered h2,
+#file-rendered h3,
+#file-rendered h4,
+#file-rendered h5,
+#file-rendered h6 {
+  margin: var(--flow-head) 0 var(--flow-body);
+  line-height: var(--leading-heading);
+  font-weight: 600;
+}
+
+#file-rendered h1 { font-size: var(--font-size-h1); }
+#file-rendered h2 { font-size: var(--font-size-h2); }
+#file-rendered h3 { font-size: var(--font-size-h3); }
+#file-rendered h4,
+#file-rendered h5,
+#file-rendered h6 { font-size: var(--font-size-h4); }
+
+/* A heading owns the block under it, so it sits closer to it than to the text
+   above. */
+#file-rendered h1 + *,
+#file-rendered h2 + *,
+#file-rendered h3 + *,
+#file-rendered h4 + *,
+#file-rendered h5 + *,
+#file-rendered h6 + * { margin-top: 0; }
+
+#file-rendered > :first-child { margin-top: 0; }
+
+#file-rendered p { margin: 0 0 var(--flow-body); }
+#file-rendered ul,
+#file-rendered ol { margin: 0 0 var(--flow-body); padding-left: var(--indent-list); }
+#file-rendered li { margin: var(--flow-tight) 0; }
+
+#file-rendered li.task-item { list-style: none; margin-left: -1.2rem; }
+#file-rendered li.task-item input { margin-right: var(--gap-control); }
+
+#file-rendered blockquote {
+  margin: 0 0 var(--flow-block);
+  padding: var(--pad-inline) 0 var(--pad-inline) var(--pad-box-x);
+  border-left: var(--border-rule) solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+#file-rendered code {
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-row);
+  padding: 0 var(--pad-inline);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--font-size-small);
+}
+
+#file-rendered pre {
+  margin: 0 0 var(--flow-block);
+  padding: var(--pad-box-y) var(--pad-box-x);
+  overflow-x: auto;
+  line-height: var(--leading-body);
+  background: var(--color-surface-sunken);
+  border: var(--border-hair) solid var(--color-border);
+  border-radius: var(--radius-box);
+}
+
+#file-rendered pre code { background: none; padding: 0; }
+
+#file-rendered hr {
+  border: 0;
+  border-top: var(--border-hair) solid var(--color-border);
+  margin: var(--flow-head) 0;
+}
+
+/* A table is not prose and does not obey the measure. It scrolls inside the
+   column rather than widening it. */
+#file-rendered table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0 0 var(--flow-block);
+  font-size: var(--font-size-small);
+}
+
+#file-rendered th,
+#file-rendered td {
+  border: var(--border-hair) solid var(--color-border);
+  padding: var(--pad-cell-y) var(--pad-cell-x);
+  text-align: left;
+}
+
+#file-rendered th { background: var(--color-surface-sunken); }
+#file-rendered .align-center { text-align: center; }
+#file-rendered .align-right { text-align: right; }
+
+/* --- link states --- */
+
+.link-note {
+  color: var(--color-accent-text);
+  text-decoration: underline;
+}
+
+.link-external {
+  color: var(--color-accent-text);
+  text-decoration: underline;
+}
+
+.link-external::after {
+  content: " \2197";
+  font-size: var(--font-size-small);
+}
+
+/* Decay is visible and nothing here repairs it. */
+.link-broken {
+  color: var(--color-danger);
+  text-decoration: underline dashed;
+  background: var(--color-danger-wash);
+}
+
+.link-file { color: var(--color-text-muted); }
+
+/* C3: a collision is surfaced, never guessed. Ambiguity is not decay, so it
+   must not wear the danger colour — the notes are all there, and the reader
+   only needs the human to say which one. Dotted, not dashed: dashed is broken. */
+.link-ambiguous {
+  color: var(--color-accent-text);
+  text-decoration: underline dotted;
+  text-underline-offset: var(--border-hair);
+}
+
+.link-ambiguous::after {
+  content: " \00BB";
+}
+
+/* C2-2: the target exists and is a folder. Named and inert, never decay. */
+.link-folder { color: var(--color-text-muted); }
+.link-folder::after { content: "/"; }
+
+/* --- the ambiguous-wikilink chooser (Sprint 5) --- */
+
+/* A sibling of #file-title, never a child: that header is one flex row, and
+   this is a block. It carries no aria-live — an interactive control does not
+   belong in a live region. */
+#file-chooser {
+  margin: var(--flow-tight) var(--pad-column) 0;
+  padding: var(--pad-box-y) var(--pad-box-x);
+  border: var(--border-hair) solid var(--color-border);
+  border-left: var(--border-rule) solid var(--color-accent);
+  border-radius: var(--radius-box);
+  background: var(--color-surface-sunken);
+}
+
+.chooser-lead {
+  margin: 0 0 var(--flow-label);
+  color: var(--color-text);
+  font-size: var(--font-size-small);
+  line-height: var(--leading-ui);
+}
+
+.chooser-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-inline);
+}
+
+/* The 24x24 floor is declared in CSS px, because the floor is. The root font
+   is 14px here, so a rem would drift: 1.5rem is 21px, not 24. */
+.chooser-choice {
+  display: block;
+  width: 100%;
+  min-height: var(--size-row);
+  text-align: left;
+  background: var(--color-control);
+  border: var(--border-hair) solid var(--color-border);
+  border-radius: var(--radius-row);
+  padding: var(--pad-row-y) var(--pad-row-x);
+  font: inherit;
+  font-size: var(--font-size-small);
+  color: var(--color-accent-text);
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.chooser-choice:hover { background: var(--color-surface-hover); }
+
+/* --- search results --- */
+
+.result-count {
+  margin: 0 0 var(--flow-label);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-row);
+  padding: var(--pad-row-y);
+  margin-bottom: var(--flow-tight);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.result:hover { background: var(--color-surface-hover); }
+
+.result-path {
+  display: block;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.result-snippet {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  word-break: break-word;
+}
+
+.hit {
+  background: var(--color-mark);
+  color: var(--color-mark-text);
+  font-weight: 600;
+}
+
+/* --- backlinks --- */
+
+#backlinks {
+  height: auto;
+  max-width: var(--measure);
+  margin-top: var(--flow-head);
+  padding-top: var(--pad-box-y);
+  border-top: var(--border-hair) solid var(--color-border);
+}
+
+#backlinks h2 {
+  margin: 0 0 var(--flow-label);
+  font-size: var(--font-size-caption);
+  line-height: var(--leading-heading);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+}
+
+#backlinks-note { margin: 0; color: var(--color-text-muted); font-size: var(--font-size-small); }
+
+#backlinks-list { list-style: none; margin: 0; padding: 0; }
+
+.backlink {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-row);
+  padding: var(--pad-inline);
+  font: inherit;
+  color: var(--color-accent-text);
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.backlink:hover { background: var(--color-surface-hover); }
+
+/* D-INTEROP-001: a wikilink is a literal until the resolution rules exist. */
+.wikilink {
+  background: var(--color-surface-sunken);
+  border: var(--border-hair) solid var(--color-border);
+  border-radius: var(--radius-row);
+  padding: 0 var(--pad-inline);
+  color: var(--color-text-muted);
+  cursor: text;
+}
+
+/* --- raw HTML and image placeholders --- */
+
+.raw-html,
+.raw-html-inline {
+  color: var(--color-text-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: var(--font-size-small);
+}
+
+#file-rendered pre.raw-html {
+  border-style: dashed;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.img-remote-blocked,
+.img-missing,
+.img-loading,
+.img-inner {
+  display: block;
+  margin: 0 0 var(--flow-block);
+  padding: var(--pad-box-y) var(--pad-box-x);
+  border: var(--border-hair) dashed var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+}
+
+.img-alt { display: block; font-style: italic; }
+.img-note { display: block; }
+
+.img-box { display: block; margin: 0 0 var(--flow-block); }
+.note-img { max-width: 100%; height: auto; }
+
+/* --- dark theme -----------------------------------------------------------
+
+   Aliases only. Not one primitive is redeclared and not one rule below :root
+   is repeated, which is the whole return on the two-tier layer: a theme is a
+   remapping, not a second stylesheet.
+
+   Keyed on the stamped attribute, not on a media query. One block serves the
+   system preference and a manual override, so the sixteen lines are never
+   written twice (D-CR-014).
+
+   Measured on #121214 (WCAG 2.1 relative luminance):
+     text        #e6e6e9  15.02:1
+     muted       #a0a0a8   7.21:1  (5.80:1 on a hovered row, the worst case)
+     accent-text #e87c33   6.56:1  (5.28:1 hovered)
+     accent      #cc5500   4.34:1  — decoration only, floor is 3
+     #0a0a0a on the #e0691a fill    5.85:1
+     danger      #ff8a80   8.20:1
+
+   Copper inverts with the ground. Light needs a DARKER copper for text because
+   the page is white; dark needs a LIGHTER one. --color-accent-strong and
+   --color-accent-text hold one value in light and two in dark, which is the
+   split D-CR-013 predicted.
+
+   The search highlight does not invert. It carries its own light amber and its
+   own dark text in both themes, because a highlight that dims is not one. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-surface:        var(--gray-1000);
+  --color-surface-sunken: var(--gray-850);
+  --color-surface-chrome: var(--gray-880);
+  --color-surface-hover:  var(--gray-800);
+  --color-control:        var(--gray-850);
+
+  --color-text:        var(--gray-200);
+  --color-text-muted:  var(--gray-400);
+  --color-accent-text: var(--copper-300);
+  --color-accent-on:   var(--gray-950);
+  --color-danger:      var(--red-300);
+  --color-mark-text:   var(--gray-900);
+
+  --color-border:        var(--gray-700);
+  --color-accent:        var(--copper-500);
+  --color-accent-strong: var(--copper-400);
+  --color-danger-wash:   var(--red-300-wash);
+  --color-mark:          var(--amber-200);
+}
+
+/* Motion is functional or deleted. One transition survives that test: the
+   disclosure triangle, which says the click landed on a dense list.
+
+   `*` does not match pseudo-elements, and the triangle IS a ::before. The
+   previous block therefore reduced nothing that this file actually animates. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: var(--motion-off) !important;
+    transition-delay: var(--motion-nodelay) !important;
+    animation-duration: var(--motion-off) !important;
+    animation-delay: var(--motion-nodelay) !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
