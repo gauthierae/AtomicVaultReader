@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AtomicVaultReader</title>
+  <link rel="stylesheet" href="reader.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+
+<main>
+
+  <section id="screen-onboarding" hidden>
+    <div class="panel">
+      <h1>AtomicVaultReader</h1>
+      <p>Choose the folder that holds your Markdown notes. You do this once.</p>
+      <p class="callout">
+        Chrome will ask for permission. On the first grant, Chrome offers a single
+        <strong>Allow</strong> &mdash; accept it. After your next browser restart, the reader shows
+        one <strong>Reopen vault</strong> button; from that point Chrome can offer
+        <strong>&quot;Allow on every visit&quot;</strong> &mdash; choose it when it appears and
+        reopening becomes automatic.
+      </p>
+      <p>Nothing leaves your machine. The reader never writes to your files.</p>
+      <p><button id="btn-grant" class="primary" type="button">Grant vault</button></p>
+    </div>
+  </section>
+
+  <section id="screen-reopen" hidden>
+    <div class="panel">
+      <h1>Reopen vault</h1>
+      <p>Chrome needs one click to reopen your vault.</p>
+      <p class="note">Chrome asks this once after a restart. To stop these prompts:
+        <strong>Change vault</strong> &rarr; pick the same folder &rarr; choose
+        <strong>&quot;Allow on every visit&quot;</strong> when Chrome offers it.</p>
+      <p><button id="btn-reopen" class="primary" type="button">Reopen vault</button></p>
+      <p id="reopen-note" class="note" hidden>Chrome refused. Pick the folder again if this repeats.</p>
+      <p><button id="btn-reopen-pick" class="link" type="button">Pick a different folder</button></p>
+    </div>
+  </section>
+
+  <section id="screen-error" hidden>
+    <div class="panel">
+      <h1 id="error-headline">Vault not found</h1>
+      <p id="error-body-moved">The reader cannot open <strong id="error-vault-name"></strong>. The
+        folder was moved, renamed, or deleted.</p>
+      <p id="error-body-picker" hidden>Chrome did not open the folder picker. Try again. Restart
+        Chrome if it repeats.</p>
+      <p id="error-detail" class="note"></p>
+      <p><button id="btn-error-pick" class="primary" type="button">Pick vault folder again</button></p>
+    </div>
+  </section>
+
+  <section id="screen-main" hidden>
+    <header id="vault-bar">
+      <span id="vault-name"></span>
+      <div id="tools" role="group" aria-label="View tools">
+        <button id="btn-tree-toggle" class="tool" type="button" aria-expanded="false" aria-controls="tree"
+                aria-label="Expand all folders" title="Expand all folders"></button>
+        <button id="btn-sidebar" class="tool" type="button" aria-expanded="true" aria-controls="sidebar"
+                aria-label="Hide the file tree" title="Hide the file tree"></button>
+        <button id="btn-frontmatter" class="tool" type="button" aria-pressed="false" aria-controls="fm-block"
+                aria-label="Show the frontmatter" title="Show the frontmatter" disabled></button>
+        <button id="btn-toc" class="tool" type="button" aria-pressed="false" aria-controls="toc"
+                aria-label="Show the table of contents" title="Show the table of contents" disabled></button>
+        <button id="btn-theme" class="tool" type="button" aria-pressed="false"
+                aria-label="Theme: follow the system" title="Theme: follow the system"></button>
+      </div>
+      <span id="vault-truncated" hidden>Large vault &mdash; the tree stops at 5000 entries or 64 folder levels.</span>
+      <button id="btn-change-vault" type="button">Change vault</button>
+    </header>
+    <div id="panes">
+      <nav id="sidebar" aria-label="Vault">
+        <input id="search-input" type="search" disabled placeholder="Indexing&hellip;"
+               aria-label="Search the vault" autocomplete="off">
+        <div id="search-results" hidden></div>
+        <div id="tree"></div>
+      </nav>
+      <div id="sidebar-resizer" role="separator" aria-orientation="vertical" tabindex="0"
+           aria-label="Resize the file tree"></div>
+      <div id="content">
+        <header id="file-title">
+          <span id="file-path" aria-live="polite" tabindex="-1"></span>
+          <span id="file-status" aria-live="polite" hidden></span>
+          <button id="btn-view" type="button" hidden>Raw</button>
+        </header>
+        <div id="file-chooser" hidden></div>
+        <div id="file-body">
+          <dl id="fm-block" hidden></dl>
+          <nav id="toc" aria-labelledby="toc-heading" hidden>
+            <h2 id="toc-heading">On this page</h2>
+            <ol id="toc-list"></ol>
+          </nav>
+          <div id="file-rendered"></div>
+          <pre id="file-raw" hidden></pre>
+          <section id="backlinks" hidden>
+            <h2>Linked from</h2>
+            <p id="backlinks-note" hidden></p>
+            <ul id="backlinks-list"></ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="../vendor/marked.umd.js"></script>
+<script src="../shared/idb.js"></script>
+<script src="../shared/vault.js"></script>
+<script src="../shared/wikilink.js"></script>
+<script src="../shared/index.js"></script>
+<script src="render.js"></script>
+<script src="reader.js"></script>
+
+</body>
+</html>
