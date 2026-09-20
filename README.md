@@ -4,7 +4,7 @@ AtomicVaultReader is a Chrome extension. It reads a folder of Markdown notes and
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-**Source build: 0.4.0** (this repo). The extension is not yet on the Chrome Web Store.
+**Source build: 0.4.0** (this repo). Version 0.4.0 went live on the [Chrome Web Store](https://chromewebstore.google.com/detail/jnikfefhlbhcgopinecnhhacjfphkcii) on 2026-09-10.
 
 ## What it does
 
@@ -25,9 +25,13 @@ The reader never writes to your files. It cannot move, rename or repair a note.
 
 ## Install
 
+### From the Chrome Web Store
+
+Install version 0.4.0 from the [Chrome Web Store](https://chromewebstore.google.com/detail/jnikfefhlbhcgopinecnhhacjfphkcii). This is the recommended channel. Chrome updates the extension for you, and it raises no developer-mode warning.
+
 ### From source
 
-The extension is not yet on the Chrome Web Store. Install it from this repository.
+Use this channel to run the current source build, which can be ahead of the store.
 
 1. Clone or download this repository
 2. Open Chrome and go to `chrome://extensions`
